@@ -20,8 +20,9 @@ function createCookie(cookieObj) {
 }
 
 exports.handler = async (event, context) => {
+  const { body, headers, httpMethod } = event;
   try {
-    switch(event.httpMethod) {
+    switch(httpMethod) {
       case 'GET':
         return {
           statusCode: 200,
@@ -30,7 +31,7 @@ exports.handler = async (event, context) => {
             'Content-Type': 'application/json'
           },
           body: JSON.stringify(
-            _.get(event, `headers.cookie.${cookieName}`, {} )
+            _.get(headers, `cookie.${cookieName}`, {})
           )
         };
       case 'POST':
@@ -39,17 +40,14 @@ exports.handler = async (event, context) => {
           headers: {
             'Cache-Control': 'no-cache',
             'Content-Type': 'application/json',
-            'Set-Cookie': createCookie(event.body)
+            'Set-Cookie': createCookie(body)
           },
-          body: JSON.stringify({ [cookieName]: event.body })
+          body: JSON.stringify({ [cookieName]: body })
         };
       default:
         return {
           statusCode: 501,
-          body: `HTTP method ${event.httpMethod} not supported.`
-          // // more keys you can return:
-          // headers: { "headerName": "headerValue", ... },
-          // isBase64Encoded: true,
+          body: `HTTP method ${httpMethod} not supported.`
         };
     }
   } catch (err) {
