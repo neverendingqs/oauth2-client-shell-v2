@@ -1,14 +1,17 @@
 {
   "name": "oauth2-client-shell-v2",
   "version": "0.0.1",
+  "private": true,
   "description": "OAuth2 client where you provide the client credentials to test the 3-legged authorization flow.",
   "main": "index.js",
   "scripts": {
-    "build": "exit 0",
+    "build": "npm run vue:build",
     "netlify": "netlify",
-    "netlify:serve": "netlify dev --functions functions",
-    "serve": "npm run netlify:serve",
-    "test": "echo \"Error: no test specified\" && exit 0"
+    "serve": "netlify dev --functions functions",
+    "test": "npm run vue:lint",
+    "vue:build": "vue-cli-service build",
+    "vue:lint": "vue-cli-service lint",
+    "vue:serve": "vue-cli-service serve"
   },
   "repository": {
     "type": "git",
@@ -20,8 +23,42 @@
     "url": "https://github.com/neverendingqs/oauth2-client-shell-v2/issues"
   },
   "homepage": "https://github.com/neverendingqs/oauth2-client-shell-v2#readme",
+  "dependencies": {
+    "core-js": "^3.1.2",
+    "vue": "^2.6.10"
+  },
   "devDependencies": {
+    "@vue/cli-plugin-babel": "^4.0.0",
+    "@vue/cli-plugin-eslint": "^4.0.0",
+    "@vue/cli-service": "^4.0.0",
+    "babel-eslint": "^10.0.1",
     "cookie": "^0.4.0",
-    "netlify-cli": "^2.19.0"
-  }
+    "eslint": "^5.16.0",
+    "eslint-plugin-vue": "^5.0.0",
+    "netlify-cli": "^2.19.0",
+    "vue-template-compiler": "^2.6.10"
+  },
+  "eslintConfig": {
+    "root": true,
+    "env": {
+      "node": true
+    },
+    "extends": [
+      "plugin:vue/essential",
+      "eslint:recommended"
+    ],
+    "rules": {},
+    "parserOptions": {
+      "parser": "babel-eslint"
+    }
+  },
+  "postcss": {
+    "plugins": {
+      "autoprefixer": {}
+    }
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions"
+  ]
 }

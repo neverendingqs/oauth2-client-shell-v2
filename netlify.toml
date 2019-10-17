@@ -1,6 +1,8 @@
 [build]
-  command = "npm install && npm run build"
+  base    = "."
+  command = "npm run build"
   functions = "functions"
+  publish = "dist"
 [dev]
   functionsPort = 34567
 [[redirects]]
