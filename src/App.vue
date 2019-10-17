@@ -1,28 +1,49 @@
 <template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
-  </div>
+  <b-container id="app">
+    <h1>OAuth 2.0 Client Shell</h1>
+    <p>Get the <code>authorization_code</code>, <code>access_token</code> and <code>refresh_token</code> for any registered OAuth2 client!</p>
+    <p>This site uses cookies. No values are persisted on the server (except potentially in web logs).</p>
+
+    <hr />
+
+    <b-row>
+      <b-col>
+        <AuthorizationServer />
+      </b-col>
+      <b-col>
+        <Client />
+      </b-col>
+    </b-row>
+
+    <b-row>
+      <b-col>
+        <b-card
+          header="Authorization Code Grant"
+        >
+          <b-card-text>
+
+          </b-card-text>
+        </b-card>
+      </b-col>
+    </b-row>
+  </b-container>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import AuthorizationServer from './components/form-groups/AuthorizationServer'
+import Client from './components/form-groups/Client'
 
 export default {
   name: 'app',
   components: {
-    HelloWorld
+    AuthorizationServer,
+    Client
   }
 }
 </script>
 
 <style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+.row {
+  margin: 1rem;
 }
 </style>
