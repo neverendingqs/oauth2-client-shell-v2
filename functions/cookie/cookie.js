@@ -3,48 +3,16 @@ const cookie = require('cookie');
 const cookieName = 'settings';
 
 exports.handler = async (event, context) => {
-  function tryParseJson(stringified) {
-    try {
-      return JSON.parse(stringified);
-    } catch {
-      return {};
-    }
-  }
-
-  function createCookie(cookieObj) {
-    return cookie.serialize(
-      cookieName,
-      JSON.stringify(cookieObj),
-      {
-        httpOnly: true,
-        path: '/',
-        maxAge: 60 * 60 * 24 * 14,
-        sameSite: 'strict',
-        secure: true
-      }
-    );
-  }
-
-  function createResponse(cookieObj) {
-    const cookieStr = createCookie(cookieObj);
-
-    return {
-      statusCode: 200,
-      headers: {
-        'Set-Cookie': cookieStr,
-        'Cache-Control': 'no-cache',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(cookieObj[cookieName]) || '{}'
-    };
-  }
-
   try {
     switch(event.httpMethod) {
       case 'GET':
-        return createResponse(event.headers.cookie);
-      case 'POST':
-        return createResponse(tryParseJson(event.body));
+        return {
+          statusCode: 200,
+          body: JSON.stringify({ cookie: event.headers.cookie })
+          // // more keys you can return:
+          // headers: { "headerName": "headerValue", ... },
+          // isBase64Encoded: true,
+        };
       default:
         return {
           statusCode: 501,
