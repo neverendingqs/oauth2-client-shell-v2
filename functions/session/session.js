@@ -5,10 +5,18 @@ const cookie = require('cookie');
 
 const cookieName = 'session';
 
-function createCookie(cookieObj) {
+function tryParseJson(stringified) {
+  try {
+    return JSON.parse(stringified);
+  } catch {
+    return {};
+  }
+}
+
+function createCookie(cookieStr) {
   return cookie.serialize(
     cookieName,
-    JSON.stringify(cookieObj),
+    cookieStr,
     {
       httpOnly: true,
       path: '/',
@@ -30,9 +38,7 @@ exports.handler = async (event, context) => {
             'Cache-Control': 'no-cache',
             'Content-Type': 'application/json'
           },
-          body: JSON.stringify(
-            _.get(headers, `cookie.${cookieName}`, {})
-          )
+          body: cookie.parse(headers.cookie)[cookieName] || '{}'
         };
       case 'POST':
         return {
@@ -42,7 +48,7 @@ exports.handler = async (event, context) => {
             'Content-Type': 'application/json',
             'Set-Cookie': createCookie(body)
           },
-          body: JSON.stringify({ [cookieName]: body })
+          body: JSON.stringify({ [cookieName]: tryParseJson(body) })
         };
       default:
         return {
