@@ -1,3 +1,6 @@
+const _ = {
+  get: require('lodash.get')
+};
 const cookie = require('cookie');
 
 const cookieName = 'settings';
@@ -26,7 +29,9 @@ exports.handler = async (event, context) => {
             'Cache-Control': 'no-cache',
             'Content-Type': 'application/json'
           },
-          body: JSON.stringify( event.headers.cookie[cookieName] )
+          body: JSON.stringify(
+            _.get(event, `headers.cookie.${cookieName}`, {} )
+          )
         };
       default:
         return {
