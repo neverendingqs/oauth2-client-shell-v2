@@ -8,7 +8,7 @@ const cookieName = 'session';
 function tryParseJson(stringified) {
   try {
     return JSON.parse(stringified);
-  } catch {
+  } catch(err) {
     return {};
   }
 }
