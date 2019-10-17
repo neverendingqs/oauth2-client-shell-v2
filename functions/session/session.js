@@ -56,7 +56,7 @@ exports.handler = async (event, context) => {
           body: `HTTP method ${httpMethod} not supported.`
         };
     }
-  } catch (err) {
+  } catch(err) {
     return { statusCode: 500, body: err.toString() };
   }
 }
