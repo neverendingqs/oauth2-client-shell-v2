@@ -2,6 +2,20 @@ const cookie = require('cookie');
 
 const cookieName = 'settings';
 
+function createCookie(cookieObj) {
+  return cookie.serialize(
+    cookieName,
+    JSON.stringify(cookieObj),
+    {
+      httpOnly: true,
+      path: '/',
+      maxAge: 60 * 60 * 24 * 14,
+      sameSite: 'strict',
+      secure: true
+    }
+  );
+}
+
 exports.handler = async (event, context) => {
   try {
     switch(event.httpMethod) {
@@ -9,7 +23,9 @@ exports.handler = async (event, context) => {
         return {
           statusCode: 200,
           headers: {
-            'Content-Type': 'application/json'
+            'Cache-Control': 'no-cache',
+            'Content-Type': 'application/json',
+            'Set-Cookie': createCookie(event.headers.cookie)
           },
           body: JSON.stringify({ cookie: event.headers.cookie })
           // // more keys you can return:
