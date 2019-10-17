@@ -5,6 +5,14 @@ const cookie = require('cookie');
 
 const cookieName = 'session';
 
+function tryParseJson(stringified) {
+  try {
+    return JSON.parse(stringified);
+  } catch {
+    return {};
+  }
+}
+
 function createCookie(cookieStr) {
   return cookie.serialize(
     cookieName,
@@ -40,7 +48,7 @@ exports.handler = async (event, context) => {
             'Content-Type': 'application/json',
             'Set-Cookie': createCookie(body)
           },
-          body: JSON.stringify({ [cookieName]: JSON.parse(body) })
+          body: JSON.stringify({ [cookieName]: tryParseJson(body) })
         };
       default:
         return {
