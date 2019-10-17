@@ -1,17 +1,21 @@
 <template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
-  </div>
+  <form-wizard>
+    <tab-content title="Personal details">
+      My first tab content
+    </tab-content>
+    <tab-content title="Additional Info">
+      My second tab content
+    </tab-content>
+    <tab-content title="Last step">
+      Yuhuuu! This seems pretty damn simple
+    </tab-content>
+  </form-wizard>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-
 export default {
   name: 'app',
   components: {
-    HelloWorld
   }
 }
 </script>

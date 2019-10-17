@@ -25,7 +25,8 @@
   "homepage": "https://github.com/neverendingqs/oauth2-client-shell-v2#readme",
   "dependencies": {
     "core-js": "^3.1.2",
-    "vue": "^2.6.10"
+    "vue": "^2.6.10",
+    "vue-form-wizard": "^0.8.4"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^4.0.0",
