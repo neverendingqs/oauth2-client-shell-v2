@@ -33,6 +33,16 @@ exports.handler = async (event, context) => {
             _.get(event, `headers.cookie.${cookieName}`, {} )
           )
         };
+      case 'POST':
+        return {
+          statusCode: 200,
+          headers: {
+            'Cache-Control': 'no-cache',
+            'Content-Type': 'application/json',
+            'Set-Cookie': createCookie(event.body)
+          },
+          body: JSON.stringify({ [cookieName]: event.body })
+        };
       default:
         return {
           statusCode: 501,
