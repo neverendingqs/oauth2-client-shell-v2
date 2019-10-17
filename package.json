@@ -3,39 +3,39 @@
   "version": "0.0.1",
   "private": true,
   "description": "OAuth2 client where you provide the client credentials to test the 3-legged authorization flow.",
-  "main": "index.js",
+  "author": "neverendingqs",
   "scripts": {
+    "serve": "netlify dev --functions functions",
     "build": "npm run vue:build",
     "netlify": "netlify",
-    "serve": "netlify dev --functions functions",
     "test": "npm run vue:lint",
     "vue:build": "vue-cli-service build",
     "vue:lint": "vue-cli-service lint",
     "vue:serve": "vue-cli-service serve"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/neverendingqs/oauth2-client-shell-v2.git"
-  },
-  "author": "neverendingqs",
-  "license": "Apache-2.0",
-  "bugs": {
-    "url": "https://github.com/neverendingqs/oauth2-client-shell-v2/issues"
-  },
-  "homepage": "https://github.com/neverendingqs/oauth2-client-shell-v2#readme",
+  "main": "index.js",
   "dependencies": {
+    "bootstrap-vue": "^2.0.0-rc.19",
     "core-js": "^3.1.2",
     "vue": "^2.6.10"
   },
   "devDependencies": {
+    "@babel/polyfill": "^7.4.4",
     "@vue/cli-plugin-babel": "^4.0.0",
     "@vue/cli-plugin-eslint": "^4.0.0",
     "@vue/cli-service": "^4.0.0",
     "babel-eslint": "^10.0.1",
+    "bootstrap": "^4.3.1",
     "cookie": "^0.4.0",
     "eslint": "^5.16.0",
     "eslint-plugin-vue": "^5.0.0",
+    "mutationobserver-shim": "^0.3.3",
     "netlify-cli": "^2.19.0",
+    "node-sass": "^4.12.0",
+    "popper.js": "^1.15.0",
+    "portal-vue": "^2.1.4",
+    "sass-loader": "^7.1.0",
+    "vue-cli-plugin-bootstrap-vue": "^0.4.0",
     "vue-template-compiler": "^2.6.10"
   },
   "eslintConfig": {
@@ -60,5 +60,14 @@
   "browserslist": [
     "> 1%",
     "last 2 versions"
-  ]
+  ],
+  "bugs": {
+    "url": "https://github.com/neverendingqs/oauth2-client-shell-v2/issues"
+  },
+  "homepage": "https://github.com/neverendingqs/oauth2-client-shell-v2#readme",
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/neverendingqs/oauth2-client-shell-v2.git"
+  }
 }
