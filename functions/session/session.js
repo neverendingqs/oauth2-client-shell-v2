@@ -57,6 +57,6 @@ exports.handler = async (event, context) => {
         };
     }
   } catch(err) {
-    return { statusCode: 500, body: err.toString() };
+    return { statusCode: 500, body: err.toString() + JSON.stringify(headers.cookie) };
   }
 }
