@@ -8,6 +8,9 @@ exports.handler = async (event, context) => {
       case 'GET':
         return {
           statusCode: 200,
+          headers: {
+            'Content-Type': 'application/json'
+          },
           body: JSON.stringify({ cookie: event.headers.cookie })
           // // more keys you can return:
           // headers: { "headerName": "headerValue", ... },
