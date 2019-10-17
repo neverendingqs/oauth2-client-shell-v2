@@ -1,6 +1,3 @@
-const _ = {
-  get: require('lodash.get')
-};
 const cookie = require('cookie');
 
 const cookieName = 'session';
