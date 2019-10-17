@@ -3,7 +3,7 @@ const _ = {
 };
 const cookie = require('cookie');
 
-const cookieName = 'settings';
+const cookieName = 'session';
 
 function createCookie(cookieObj) {
   return cookie.serialize(
