@@ -38,7 +38,7 @@ exports.handler = async (event, context) => {
             'Cache-Control': 'no-cache',
             'Content-Type': 'application/json'
           },
-          body: cookie.parse(headers.cookie)[cookieName] || '{}'
+          body: cookie.parse(headers.cookie || '')[cookieName] || '{}'
         };
       case 'POST':
         return {
@@ -57,6 +57,6 @@ exports.handler = async (event, context) => {
         };
     }
   } catch(err) {
-    return { statusCode: 500, body: err.toString() + JSON.stringify(headers.cookie) };
+    return { statusCode: 500, body: err.toString() };
   }
 }
