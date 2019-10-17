@@ -1,0 +1,26 @@
+{
+  "name": "oauth2-client-shell-v2",
+  "version": "0.0.1",
+  "description": "OAuth2 client where you provide the client credentials to test the 3-legged authorization flow.",
+  "main": "index.js",
+  "scripts": {
+    "build": "exit 0",
+    "netlify": "netlify",
+    "netlify:serve": "netlify dev --functions functions",
+    "serve": "npm run netlify:serve",
+    "test": "echo \"Error: no test specified\" && exit 0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/neverendingqs/oauth2-client-shell-v2.git"
+  },
+  "author": "neverendingqs",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/neverendingqs/oauth2-client-shell-v2/issues"
+  },
+  "homepage": "https://github.com/neverendingqs/oauth2-client-shell-v2#readme",
+  "devDependencies": {
+    "netlify-cli": "^2.19.0"
+  }
+}
