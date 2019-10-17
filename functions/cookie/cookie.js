@@ -24,13 +24,9 @@ exports.handler = async (event, context) => {
           statusCode: 200,
           headers: {
             'Cache-Control': 'no-cache',
-            'Content-Type': 'application/json',
-            'Set-Cookie': createCookie(event.headers.cookie)
+            'Content-Type': 'application/json'
           },
-          body: JSON.stringify({ cookie: event.headers.cookie })
-          // // more keys you can return:
-          // headers: { "headerName": "headerValue", ... },
-          // isBase64Encoded: true,
+          body: JSON.stringify( event.headers.cookie[cookieName] )
         };
       default:
         return {
