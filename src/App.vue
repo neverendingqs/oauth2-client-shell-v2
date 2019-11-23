@@ -32,7 +32,7 @@
           >
             <b-form-input
               id="authorization-endpoint-input"
-              v-model="form.auth_endpoint"
+              v-model="form.authEndpoint"
               type="text"
               required
               placeholder="https://accounts.google.com/o/oauth2/v2/auth"
@@ -48,7 +48,7 @@
           >
             <b-form-input
               id="token-endpoint-input"
-              v-model="form.token_endpoint"
+              v-model="form.tokenEndpoint"
               type="text"
               required
               placeholder="https://www.googleapis.com/oauth2/v4/token"
@@ -66,7 +66,7 @@
           >
             <b-form-input
               id="client-id-input"
-              v-model="form.client_id"
+              v-model="form.clientId"
               type="text"
               required
               placeholder="812741506391.apps.googleusercontent.com"
@@ -81,7 +81,7 @@
           >
             <b-form-input
               id="client-secret-input"
-              v-model="form.client_secret"
+              v-model="form.clientSecret"
               type="text"
               required
               placeholder="abc123"
@@ -99,7 +99,7 @@
           >
             <b-form-input
               id="redirect-uri-input"
-              v-model="form.redirect_uri"
+              v-model="form.redirectUri"
               type="text"
               required
               disabled
@@ -147,7 +147,7 @@
           >
             <b-form-input
               id="custom-parameters-input"
-              v-model="form.custom_parameters"
+              v-model="form.customParameters"
               type="text"
               placeholder="access_type=online&include_granted_scopes=false"
             ></b-form-input>
@@ -157,7 +157,10 @@
 
       <b-row v-if="isStart">
         <b-col>
-          <b-button variant="primary">
+          <b-button
+            variant="primary"
+            @click="getAuthCode"
+          >
             Get Authorization Code
           </b-button>
         </b-col>
@@ -173,13 +176,13 @@
             <b-input-group>
               <b-form-input
                 id="authorization-code-input"
-                v-model="form.auth_code"
+                v-model="form.authCode"
                 type="text"
               ></b-form-input>
               <b-input-group-append>
                 <b-button
                   variant="primary"
-                  v-clipboard:copy="form.auth_code"
+                  v-clipboard:copy="form.authCode"
                 >Copy</b-button>
               </b-input-group-append>
             </b-input-group>
@@ -205,14 +208,14 @@
             <b-input-group>
             <b-form-input
               id="access-token-input"
-              v-model="form.access_token"
+              v-model="form.accessToken"
               type="text"
               disabled
             ></b-form-input>
             <b-input-group-append>
               <b-button
                 variant="primary"
-                v-clipboard:copy="form.access_token"
+                v-clipboard:copy="form.accessToken"
               >Copy</b-button>
             </b-input-group-append>
           </b-input-group>
@@ -227,13 +230,13 @@
             <b-input-group>
               <b-form-input
                 id="refresh-token-input"
-                v-model="form.refresh_token"
+                v-model="form.refreshToken"
                 type="text"
               ></b-form-input>
               <b-input-group-append>
                 <b-button
                   variant="primary"
-                  v-clipboard:copy="form.refresh_token"
+                  v-clipboard:copy="form.refreshToken"
                 >Copy</b-button>
               </b-input-group-append>
             </b-input-group>
@@ -253,6 +256,8 @@
 </template>
 
 <script>
+import cache from './lib/cache';
+
 export default {
   name: 'app',
   components: {
@@ -271,25 +276,40 @@ export default {
   data() {
     return {
       form: {
-        auth_endpoint: '',
-        token_endpoint: '',
+        authEndpoint: '',
+        tokenEndpoint: '',
 
-        client_id: '',
-        client_secret:'',
+        clientId: '',
+        clientSecret:'',
 
-        redirect_uri: process.env.VUE_APP_URL,
+        redirectUri: process.env.VUE_APP_URL,
         scope: '',
 
-        custom_parameters: '',
+        customParameters: '',
         state: '',
 
-        auth_code: '',
-        refresh_token: ''
+        authCode: '',
+        accessToken: '',
+        refreshToken: ''
       },
       workflow: {
         options: ['Start', 'Authorization Code', 'Refresh Token'],
         state: 'Start'
       }
+    }
+  },
+  methods: {
+    getAuthCode() {
+      cache.authEndPoint = this.form.authEndpoint;
+      cache.tokenEndpoint = this.form.tokenEndpoint;
+      cache.clientId = this.form.clientId;
+      cache.clientSecret = this.form.clientSecret;
+      cache.scope = this.form.scope;
+      cache.customParameters = this.form.customParameters;
+      cache.state = this.form.state;
+      cache.authCode = this.form.authCode;
+      cache.accessToken = this.form.accessToken;
+      cache.refreshToken = this.form.refreshToken;
     }
   }
 }
