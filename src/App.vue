@@ -192,7 +192,10 @@
 
       <b-row v-if="isAuthCode">
         <b-col>
-          <b-button variant="primary">
+          <b-button
+            variant="primary"
+            @click="tradeInAuthCode"
+          >
             Trade in Authorization Code
           </b-button>
         </b-col>
@@ -246,7 +249,10 @@
 
       <b-row v-if="isRefreshToken">
         <b-col>
-          <b-button variant="primary">
+          <b-button
+            variant="primary"
+            @click="tradeInRefreshToken"
+          >
             Trade in Refresh Token
           </b-button>
         </b-col>
@@ -300,6 +306,15 @@ export default {
   },
   methods: {
     getAuthCode() {
+      this.updateAllCacheValues();
+    },
+    tradeInAuthCode() {
+      this.updateAllCacheValues();
+    },
+    tradeInRefreshToken() {
+      this.updateAllCacheValues();
+    },
+    updateAllCacheValues() {
       cache.authEndPoint = this.form.authEndpoint;
       cache.tokenEndpoint = this.form.tokenEndpoint;
       cache.clientId = this.form.clientId;
