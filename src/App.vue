@@ -164,7 +164,7 @@
       </b-row>
 
       <b-row v-if="isAuthCode">
-        <b-col lg="6">
+        <b-col>
           <b-form-group
             id="authorization-code-group"
             label="Authorization Code"
