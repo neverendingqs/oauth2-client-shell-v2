@@ -207,6 +207,7 @@
               id="access-token-input"
               v-model="form.access_token"
               type="text"
+              disabled
             ></b-form-input>
             <b-input-group-append>
               <b-button
