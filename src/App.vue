@@ -315,6 +315,18 @@ export default {
         + `&scope=${this.form.scope}`
         + `&state=${this.form.state}`;
     },
+    handleError(msg, workflowState = 'Start') {
+      this.$bvToast.toast(msg, {
+        autoHideDelay: 5000,
+        appendToast: false,
+        solid: true,
+        title: 'Error',
+        toaster: 'b-toaster-bottom-center',
+        variant: 'danger'
+      });
+
+      this.workflow.state = workflowState;
+    },
     tradeInAuthCode() {
       this.updateAllCacheValues();
     },
@@ -335,14 +347,26 @@ export default {
     }
   },
   mounted() {
-    //eslint-disable-next-line
-    console.log(!!window.location.search)
     const params = new URLSearchParams(window.location.search);
+    const code = params.get('code');
+    const state = params.get('state');
 
-    //TODO check state in URL and add toast if it does not match cache.state
+    if(state) {
+      if(state !== this.form.state) {
+        this.handleError(
+          'State from authorization server did not match the state we sent. They must match to prevent cross-site request forgery. Please try again.'
+        );
+        return;
+      }
 
-    if(params.has('code')) {
-      this.form.authCode = params.get('code');
+      if(!code) {
+        this.handleError(
+          'Authorization server returned an invalid response (missing "code" query string parameter).'
+        );
+        return;
+      }
+
+      this.form.authCode = code;
       this.workflow.state = 'Authorization Code';
     }
 
@@ -350,7 +374,7 @@ export default {
       this.form.state = rand(256, 36);
     }
 
-    window.history.replaceState({}, document.title, '/');
+    window.history.pushState({}, document.title, '/');
   }
 }
 </script>

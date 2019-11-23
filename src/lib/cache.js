@@ -42,10 +42,10 @@ module.exports = {
   },
 
   get state() {
-    return window.sessionStorage.getItem('state') || '';
+    return window.localStorage.getItem('state') || '';
   },
   set state(value) {
-    window.sessionStorage.setItem('state', value);
+    window.localStorage.setItem('state', value);
   },
 
   get authCode() {
