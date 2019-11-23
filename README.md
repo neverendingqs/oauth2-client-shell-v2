@@ -6,6 +6,10 @@ npm install
 ```
 
 ### Compiles and hot-reloads for development
+
+If using Chrome, you may need to set `chrome://flags/#allow-insecure-localhost`
+to `Enabled`
+
 ```
 npm run serve
 ```
