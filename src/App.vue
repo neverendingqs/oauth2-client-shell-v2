@@ -262,6 +262,7 @@
 </template>
 
 <script>
+import rand from 'csprng';
 import cache from './lib/cache';
 
 export default {
@@ -277,26 +278,26 @@ export default {
     },
     isStart() {
       return this.workflow.state === 'Start';
-    },
+    }
   },
   data() {
     return {
       form: {
-        authEndpoint: '',
-        tokenEndpoint: '',
+        authEndpoint: cache.authEndPoint,
+        tokenEndpoint: cache.tokenEndpoint,
 
-        clientId: '',
-        clientSecret:'',
+        clientId: cache.clientId,
+        clientSecret: cache.clientSecret,
 
         redirectUri: process.env.VUE_APP_URL,
-        scope: '',
+        scope: cache.scope,
 
-        customParameters: '',
-        state: '',
+        customParameters: cache.customParameters,
+        state: cache.state || rand(256, 36),
 
-        authCode: '',
-        accessToken: '',
-        refreshToken: ''
+        authCode: cache.authCode,
+        accessToken: cache.accessToken,
+        refreshToken: cache.refreshToken
       },
       workflow: {
         options: ['Start', 'Authorization Code', 'Refresh Token'],
@@ -307,6 +308,12 @@ export default {
   methods: {
     getAuthCode() {
       this.updateAllCacheValues();
+      window.location.href = this.form.authEndpoint
+        + '?response_type=code'
+        + `&redirect_uri=${this.form.redirectUri}`
+        + `&client_id=${this.form.clientId}`
+        + `&scope=${this.form.scope}`
+        + `&state=${this.form.state}`;
     },
     tradeInAuthCode() {
       this.updateAllCacheValues();
@@ -326,6 +333,24 @@ export default {
       cache.accessToken = this.form.accessToken;
       cache.refreshToken = this.form.refreshToken;
     }
+  },
+  mounted() {
+    //eslint-disable-next-line
+    console.log(!!window.location.search)
+    const params = new URLSearchParams(window.location.search);
+
+    //TODO check state in URL and add toast if it does not match cache.state
+
+    if(params.has('code')) {
+      this.form.authCode = params.get('code');
+      this.workflow.state = 'Authorization Code';
+    }
+
+    if(this.isStart) {
+      this.form.state = rand(256, 36);
+    }
+
+    window.history.replaceState({}, document.title, '/');
   }
 }
 </script>
