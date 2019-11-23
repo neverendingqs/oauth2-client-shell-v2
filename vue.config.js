@@ -1,5 +1,7 @@
+const { key, cert } = require('openssl-self-signed-certificate');
+
 module.exports = {
   devServer: {
-    https: true,
+    https: { key, cert }
   },
 }
