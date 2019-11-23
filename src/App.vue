@@ -6,9 +6,10 @@
     <hr />
 
     <b-form>
+      <h2>Workflow</h2>
       <b-row>
         <b-col>
-          <b-form-group label="Grant Type">
+          <b-form-group>
             <b-form-radio-group
               id="starting-state-group"
               v-model="workflow.state"
@@ -21,8 +22,9 @@
         </b-col>
       </b-row>
 
+      <h2>Request Details</h2>
       <b-row>
-        <b-col>
+        <b-col lg="6">
           <b-form-group
             id="authorization-endpoint-group"
             label="Authorization Endpoint"
@@ -34,10 +36,11 @@
               type="text"
               required
               placeholder="https://accounts.google.com/o/oauth2/v2/auth"
+              :disabled="!isStart"
             ></b-form-input>
           </b-form-group>
         </b-col>
-        <b-col>
+        <b-col lg="6">
           <b-form-group
             id="token-endpoint-group"
             label="Token Endpoint"
@@ -55,7 +58,7 @@
         </b-col>
       </b-row>
       <b-row>
-        <b-col>
+        <b-col lg="6">
           <b-form-group
             id="client-id-group"
             label="Client ID"
@@ -70,7 +73,7 @@
             ></b-form-input>
           </b-form-group>
         </b-col>
-        <b-col>
+        <b-col lg="6">
           <b-form-group
             id="client-secret-group"
             label="Client Secret Endpoint"
@@ -88,7 +91,7 @@
         </b-col>
       </b-row>
       <b-row>
-        <b-col>
+        <b-col lg="6">
           <b-form-group
             id="redirect-uri-group"
             label="Redirect URI"
@@ -103,7 +106,7 @@
             ></b-form-input>
           </b-form-group>
         </b-col>
-        <b-col>
+        <b-col lg="6">
           <b-form-group
             id="scope-group"
             label="Scope"
@@ -122,7 +125,7 @@
       </b-row>
 
       <b-row v-if="isStart">
-        <b-col>
+        <b-col lg="6">
           <b-form-group
             id="state-group"
             label="State"
@@ -136,7 +139,7 @@
             ></b-form-input>
           </b-form-group>
         </b-col>
-        <b-col>
+        <b-col lg="6">
           <b-form-group
             id="custom-parameters-group"
             label="Custom Parameters (Form-Encoded, Optional)"
@@ -161,7 +164,7 @@
       </b-row>
 
       <b-row v-if="isAuthCode">
-        <b-col>
+        <b-col lg="6">
           <b-form-group
             id="authorization-code-group"
             label="Authorization Code"
@@ -193,7 +196,7 @@
       </b-row>
 
       <b-row v-if="isRefreshToken">
-        <b-col>
+        <b-col lg="6">
           <b-form-group
             id="access-token-group"
             label="Access Token"
@@ -214,7 +217,7 @@
           </b-input-group>
           </b-form-group>
         </b-col>
-        <b-col>
+        <b-col lg="6">
           <b-form-group
             id="refresh-token-group"
             label="Refresh Token"
