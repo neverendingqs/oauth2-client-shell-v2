@@ -332,7 +332,7 @@ export default {
 
       window.location.href = `${this.form.authEndpoint}?${query}`;
     },
-    handleError(msg, workflowState = 'Start') {
+    handleError(msg, workflowStateOnError = 'Start') {
       this.$bvToast.toast(msg, {
         appendToast: false,
         noAutoHide: true,
@@ -342,17 +342,9 @@ export default {
         variant: 'danger'
       });
 
-      this.workflow.state = workflowState;
+      this.workflow.state = workflowStateOnError;
     },
-    async tradeInAuthCode() {
-      this.updateAllCacheValues();
-
-      const body = {
-        grant_type: 'authorization_code',
-        redirect_uri: this.form.redirectUri,
-        code: this.form.authCode
-      };
-
+    async requestTokens(body, workflowStateOnError) {
       const response = await fetch(this.form.tokenEndpoint, {
         method: 'POST',
         headers: {
@@ -367,26 +359,50 @@ export default {
         this.handleError(
           `Authorization server rejected the request with a status code of '${response.status}'. `
             + `Body: '${responseText}'`,
-          'Authorization Code'
+          workflowStateOnError
         );
       }
 
       try {
         const { access_token, refresh_token } = await response.json();
-        this.form.accessToken = access_token;
-        this.form.refreshToken = refresh_token;
-        this.workflow.state = 'Refresh Token';
-        this.updateAllCacheValues();
+        return { access_token, refresh_token };
       } catch (err) {
         const responseText = await response.text();
         this.handleError(
           `Unable to parse authorization server response: '${responseText}'`,
-          'Authorization Code'
+          workflowStateOnError
         );
       }
     },
-    tradeInRefreshToken() {
+    async tradeInAuthCode() {
       this.updateAllCacheValues();
+
+      const body = {
+        grant_type: 'authorization_code',
+        redirect_uri: this.form.redirectUri,
+        code: this.form.authCode
+      };
+
+      const { access_token, refresh_token } = await this.requestTokens(body, 'Authorization Code');
+
+      this.form.accessToken = access_token;
+      this.form.refreshToken = refresh_token || 'Not provided by authorization server.';
+      this.workflow.state = 'Refresh Token';
+    },
+    async tradeInRefreshToken() {
+      this.updateAllCacheValues();
+
+      const body = {
+        grant_type: 'refresh_token',
+        refresh_token: this.form.refreshToken,
+        scope: this.form.scope
+      };
+
+      const { access_token, refresh_token } = await this.requestTokens(body, 'Refresh Token');
+
+      this.form.accessToken = access_token;
+      this.form.refreshToken = refresh_token || this.form.refreshToken;
+      this.workflow.state = 'Refresh Token';
     },
     updateAllCacheValues() {
       cache.authEndPoint = this.form.authEndpoint;
