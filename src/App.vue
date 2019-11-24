@@ -258,6 +258,10 @@
         </b-col>
       </b-row>
     </b-form>
+    <hr />
+    <footer class="text-center">
+      <i>Source code is available on <a href="https://github.com/neverendingqs/oauth2-client-shell-v2" target="_blank" rel="noopener noreferrer">GitHub</a>.</i>
+    </footer>
   </b-container>
 </template>
 
@@ -458,4 +462,7 @@ export default {
 </script>
 
 <style>
+body {
+  padding: 2vh 0;
+}
 </style>
