@@ -265,6 +265,16 @@
 import rand from 'csprng';
 import cache from './lib/cache';
 
+function objToFormEncoded(obj) {
+  return Object.entries(obj)
+    .reduce(
+      (acc, [key, value]) => acc
+        ? `${acc}&${encodeURIComponent(key)}=${encodeURIComponent(value)}`
+        : `${encodeURIComponent(key)}=${encodeURIComponent(value)}`,
+      ''
+    );
+}
+
 export default {
   name: 'app',
   components: {
@@ -289,7 +299,7 @@ export default {
         clientId: cache.clientId,
         clientSecret: cache.clientSecret,
 
-        redirectUri: process.env.VUE_APP_URL,
+        redirectUri: '',
         scope: cache.scope,
 
         customParameters: cache.customParameters,
@@ -308,17 +318,24 @@ export default {
   methods: {
     getAuthCode() {
       this.updateAllCacheValues();
-      window.location.href = this.form.authEndpoint
-        + '?response_type=code'
-        + `&redirect_uri=${this.form.redirectUri}`
-        + `&client_id=${this.form.clientId}`
-        + `&scope=${this.form.scope}`
-        + `&state=${this.form.state}`;
+      let query = objToFormEncoded({
+        response_type: 'code',
+        redirect_uri: this.form.redirectUri,
+        client_id: this.form.clientId,
+        scope: this.form.scope,
+        state: this.form.state
+      });
+
+      if(this.form.customParameters) {
+        query += `&${this.form.customParameters}`;
+      }
+
+      window.location.href = `${this.form.authEndpoint}?${query}`;
     },
     handleError(msg, workflowState = 'Start') {
       this.$bvToast.toast(msg, {
-        autoHideDelay: 5000,
         appendToast: false,
+        noAutoHide: true,
         solid: true,
         title: 'Error',
         toaster: 'b-toaster-bottom-center',
@@ -327,8 +344,49 @@ export default {
 
       this.workflow.state = workflowState;
     },
-    tradeInAuthCode() {
+    async tradeInAuthCode() {
       this.updateAllCacheValues();
+
+      const body = {
+        grant_type: 'authorization_code',
+        redirect_uri: this.form.redirectUri,
+        code: this.form.authCode
+      };
+
+      const response = await fetch(this.form.tokenEndpoint, {
+        method: 'POST',
+        headers: {
+          Authorization: `Basic ${btoa(`${this.form.clientId}:${this.form.clientSecret}`)}`,
+          'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: objToFormEncoded(body)
+      });
+
+      if(!response.ok) {
+        const responseText = await response.text();
+        this.handleError(
+          `Authorization server rejected the request with a status code of '${response.status}'. `
+            + `Body: '${responseText}'`,
+          'Authorization Code'
+        );
+      }
+
+      try {
+        const { access_token, refresh_token } = await response.json();
+        this.form.accessToken = access_token;
+        this.form.refreshToken = refresh_token;
+        this.workflow.state = 'Refresh Token';
+        this.updateAllCacheValues();
+      } catch (err) {
+        const responseText = await response.text();
+        this.handleError(
+          `Unable to parse authorization server response: '${responseText}'`,
+          'Authorization Code'
+        );
+      }
+
+      //eslint-disable-next-line
+      console.log(responseBody);
     },
     tradeInRefreshToken() {
       this.updateAllCacheValues();
@@ -347,9 +405,12 @@ export default {
     }
   },
   mounted() {
+    this.form.redirectUri = window.location.origin;
+
     const params = new URLSearchParams(window.location.search);
     const code = params.get('code');
     const state = params.get('state');
+    window.history.pushState({}, document.title, '/');
 
     if(state) {
       if(state !== this.form.state) {
@@ -373,8 +434,6 @@ export default {
     if(this.isStart) {
       this.form.state = rand(256, 36);
     }
-
-    window.history.pushState({}, document.title, '/');
   }
 }
 </script>
