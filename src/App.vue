@@ -384,9 +384,6 @@ export default {
           'Authorization Code'
         );
       }
-
-      //eslint-disable-next-line
-      console.log(responseBody);
     },
     tradeInRefreshToken() {
       this.updateAllCacheValues();
