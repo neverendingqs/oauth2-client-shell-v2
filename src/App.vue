@@ -276,6 +276,10 @@ function objToFormEncoded(obj) {
     );
 }
 
+function generateState() {
+  return rand(256, 36);
+}
+
 export default {
   name: 'app',
   components: {
@@ -304,7 +308,7 @@ export default {
         scope: cache.scope,
 
         customParameters: cache.customParameters,
-        state: cache.state || rand(256, 36),
+        state: cache.state || generateState(),
 
         authCode: cache.authCode,
         accessToken: cache.accessToken,
@@ -386,6 +390,7 @@ export default {
 
       const { access_token, refresh_token } = await this.requestTokens(body, AUTH_CODE);
 
+      this.form.authCode = `(Used) ${this.form.authCode}`;
       this.form.accessToken = access_token;
       this.form.refreshToken = refresh_token || 'Not provided by authorization server.';
       this.workflow.state = REFRESH_TOKEN;
@@ -429,8 +434,9 @@ export default {
     if(state) {
       if(state !== this.form.state) {
         this.handleError(
-          'State from authorization server did not match the state we sent. They must match to prevent cross-site request forgery. Please try again.'
+          `State from authorization server (${state}) did not match the state we sent (${this.form.state}). They must match to prevent cross-site request forgery. Please try again.`
         );
+        this.form.state = generateState();
         return;
       }
 
@@ -438,6 +444,7 @@ export default {
         this.handleError(
           'Authorization server returned an invalid response (missing "code" query string parameter).'
         );
+        this.form.state = generateState();
         return;
       }
 
@@ -445,9 +452,7 @@ export default {
       this.workflow.state = AUTH_CODE;
     }
 
-    if(this.isStart) {
-      this.form.state = rand(256, 36);
-    }
+    this.form.state = generateState();
   }
 }
 </script>
