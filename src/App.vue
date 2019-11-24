@@ -264,6 +264,7 @@
 <script>
 import rand from 'csprng';
 import cache from './lib/cache';
+import { START, AUTH_CODE, REFRESH_TOKEN } from './lib/workflowStates';
 
 function objToFormEncoded(obj) {
   return Object.entries(obj)
@@ -281,13 +282,13 @@ export default {
   },
   computed: {
     isAuthCode() {
-      return this.workflow.state === 'Authorization Code';
+      return this.workflow.state === AUTH_CODE;
     },
     isRefreshToken() {
-      return this.workflow.state === 'Refresh Token';
+      return this.workflow.state === REFRESH_TOKEN;
     },
     isStart() {
-      return this.workflow.state === 'Start';
+      return this.workflow.state === START;
     }
   },
   data() {
@@ -310,8 +311,8 @@ export default {
         refreshToken: cache.refreshToken
       },
       workflow: {
-        options: ['Start', 'Authorization Code', 'Refresh Token'],
-        state: 'Start'
+        options: [START, AUTH_CODE, REFRESH_TOKEN],
+        state: START
       }
     }
   },
@@ -332,7 +333,7 @@ export default {
 
       window.location.href = `${this.form.authEndpoint}?${query}`;
     },
-    handleError(msg, workflowStateOnError = 'Start') {
+    handleError(msg, workflowStateOnError = START) {
       this.$bvToast.toast(msg, {
         appendToast: false,
         noAutoHide: true,
@@ -383,11 +384,11 @@ export default {
         code: this.form.authCode
       };
 
-      const { access_token, refresh_token } = await this.requestTokens(body, 'Authorization Code');
+      const { access_token, refresh_token } = await this.requestTokens(body, AUTH_CODE);
 
       this.form.accessToken = access_token;
       this.form.refreshToken = refresh_token || 'Not provided by authorization server.';
-      this.workflow.state = 'Refresh Token';
+      this.workflow.state = REFRESH_TOKEN;
     },
     async tradeInRefreshToken() {
       this.updateAllCacheValues();
@@ -398,11 +399,11 @@ export default {
         scope: this.form.scope
       };
 
-      const { access_token, refresh_token } = await this.requestTokens(body, 'Refresh Token');
+      const { access_token, refresh_token } = await this.requestTokens(body, REFRESH_TOKEN);
 
       this.form.accessToken = access_token;
       this.form.refreshToken = refresh_token || this.form.refreshToken;
-      this.workflow.state = 'Refresh Token';
+      this.workflow.state = REFRESH_TOKEN;
     },
     updateAllCacheValues() {
       cache.authEndPoint = this.form.authEndpoint;
@@ -441,7 +442,7 @@ export default {
       }
 
       this.form.authCode = code;
-      this.workflow.state = 'Authorization Code';
+      this.workflow.state = AUTH_CODE;
     }
 
     if(this.isStart) {
