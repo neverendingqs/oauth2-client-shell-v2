@@ -3,9 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "serve": "vue-cli-service serve",
+    "start": "http-server dist/ -o -S -C node_modules/openssl-self-signed-certificate/cert.pem -K node_modules/openssl-self-signed-certificate/key.pem"
   },
   "dependencies": {
     "bootstrap-vue": "^2.0.4",
@@ -24,6 +25,7 @@
     "bootstrap": "^4.3.1",
     "eslint": "^5.16.0",
     "eslint-plugin-vue": "^5.0.0",
+    "http-server": "^0.12.0",
     "mutationobserver-shim": "^0.3.3",
     "node-sass": "^4.12.0",
     "openssl-self-signed-certificate": "^1.1.6",
