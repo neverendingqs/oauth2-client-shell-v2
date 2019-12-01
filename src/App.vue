@@ -204,7 +204,7 @@
             variant="primary"
             @click="tradeInAuthCode"
           >
-            Trade in Authorization Code
+            Trade in Authorization Code <b-spinner small v-if="workflow.showSpinner" />
           </b-button>
         </b-col>
       </b-row>
@@ -263,7 +263,7 @@
             variant="primary"
             @click="tradeInRefreshToken"
           >
-            Trade in Refresh Token
+            Trade in Refresh Token <b-spinner small v-if="workflow.showSpinner" />
           </b-button>
         </b-col>
       </b-row>
@@ -330,6 +330,7 @@ export default {
       },
       workflow: {
         options: [START, AUTH_CODE, REFRESH_TOKEN],
+        showSpinner: false,
         state: START
       }
     }
@@ -364,6 +365,7 @@ export default {
       this.workflow.state = workflowStateOnError;
     },
     async requestTokens(body, workflowStateOnError) {
+      this.workflow.showSpinner = true;
       const response = await fetch(this.form.tokenEndpoint, {
         method: 'POST',
         headers: {
@@ -391,6 +393,8 @@ export default {
           `Unable to parse authorization server response: '${responseText}'`,
           workflowStateOnError
         );
+      } finally {
+        this.workflow.showSpinner = false;
       }
     },
     async tradeInAuthCode() {
