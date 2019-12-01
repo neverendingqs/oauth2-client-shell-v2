@@ -34,9 +34,10 @@
               id="authorization-endpoint-input"
               v-model="form.authEndpoint"
               type="text"
-              required
               placeholder="https://accounts.google.com/o/oauth2/v2/auth"
               :disabled="!isStart"
+              :required="isStart"
+              :state="!isStart || form.authEndpoint.length > 0 ? null : false"
             ></b-form-input>
           </b-form-group>
         </b-col>
@@ -50,9 +51,10 @@
               id="token-endpoint-input"
               v-model="form.tokenEndpoint"
               type="text"
-              required
               placeholder="https://www.googleapis.com/oauth2/v4/token"
               :disabled="isStart"
+              :required="!isStart"
+              :state="isStart || form.tokenEndpoint.length > 0 ? null : false"
             ></b-form-input>
           </b-form-group>
         </b-col>
@@ -68,8 +70,9 @@
               id="client-id-input"
               v-model="form.clientId"
               type="text"
-              required
               placeholder="812741506391.apps.googleusercontent.com"
+              required
+              :state="form.clientId.length > 0 ? null : false"
             ></b-form-input>
           </b-form-group>
         </b-col>
@@ -83,9 +86,10 @@
               id="client-secret-input"
               v-model="form.clientSecret"
               type="text"
-              required
               placeholder="abc123"
               :disabled="isStart"
+              :required="!isStart"
+              :state="isStart || form.clientSecret.length > 0 ? null : false"
             ></b-form-input>
           </b-form-group>
         </b-col>
@@ -101,8 +105,8 @@
               id="redirect-uri-input"
               v-model="form.redirectUri"
               type="text"
-              required
               disabled
+              required
             ></b-form-input>
           </b-form-group>
         </b-col>
@@ -116,9 +120,10 @@
               id="scope-input"
               v-model="form.scope"
               type="text"
-              required
               placeholder="profile"
               :disabled="isAuthCode"
+              :required="!isAuthCode"
+              :state="isAuthCode || form.scope.length > 0 ? null : false"
             ></b-form-input>
           </b-form-group>
         </b-col>
@@ -136,6 +141,7 @@
               v-model="form.state"
               type="text"
               required
+              :state="form.state.length > 0 ? null : false"
             ></b-form-input>
           </b-form-group>
         </b-col>
@@ -178,6 +184,8 @@
                 id="authorization-code-input"
                 v-model="form.authCode"
                 type="text"
+                required
+                :state="form.authCode.length > 0 ? null : false"
               ></b-form-input>
               <b-input-group-append>
                 <b-button
@@ -235,6 +243,8 @@
                 id="refresh-token-input"
                 v-model="form.refreshToken"
                 type="text"
+                required
+                :state="form.refreshToken.length > 0 ? null : false"
               ></b-form-input>
               <b-input-group-append>
                 <b-button
