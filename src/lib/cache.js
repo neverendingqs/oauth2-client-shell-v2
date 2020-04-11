@@ -68,4 +68,4 @@ module.exports = {
   set refreshToken(value) {
     window.sessionStorage.setItem('refreshToken', value);
   }
-}
+};
