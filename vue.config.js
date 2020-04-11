@@ -4,4 +4,4 @@ module.exports = {
   devServer: {
     https: { key, cert }
   },
-}
+};

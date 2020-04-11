@@ -333,7 +333,7 @@ export default {
         showSpinner: false,
         state: START
       }
-    }
+    };
   },
   methods: {
     getAuthCode() {
@@ -472,7 +472,7 @@ export default {
 
     this.form.state = generateState();
   }
-}
+};
 </script>
 
 <style>
