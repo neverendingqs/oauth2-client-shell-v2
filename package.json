@@ -5,11 +5,13 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
+    "cd": "npm run test && npm run build",
     "test:unit": "vue-cli-service test:unit",
     "test:unit:debug": "vue-cli-service test:unit --inspect-brk --watch",
     "lint": "vue-cli-service lint",
     "start": "http-server dist/ -o -S -C node_modules/openssl-self-signed-certificate/cert.pem -K node_modules/openssl-self-signed-certificate/key.pem",
-    "test": "npm run test:unit"
+    "test": "npm run test:unit",
+    "posttest": "npm run lint"
   },
   "dependencies": {
     "bootstrap-vue": "^2.11.0",
