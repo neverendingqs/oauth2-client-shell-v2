@@ -276,7 +276,6 @@
 </template>
 
 <script>
-import rand from 'csprng';
 import cache from './lib/cache';
 import { START, AUTH_CODE, REFRESH_TOKEN } from './lib/workflowStates';
 
@@ -290,50 +289,11 @@ function objToFormEncoded(obj) {
     );
 }
 
-function generateState() {
-  return rand(256, 36);
-}
-
 export default {
   name: 'app',
   components: {
   },
-  computed: {
-    isAuthCode() {
-      return this.workflow.state === AUTH_CODE;
-    },
-    isRefreshToken() {
-      return this.workflow.state === REFRESH_TOKEN;
-    },
-    isStart() {
-      return this.workflow.state === START;
-    }
-  },
   data() {
-    return {
-      form: {
-        authEndpoint: cache.authEndPoint,
-        tokenEndpoint: cache.tokenEndpoint,
-
-        clientId: cache.clientId,
-        clientSecret: cache.clientSecret,
-
-        redirectUri: '',
-        scope: cache.scope,
-
-        customParameters: cache.customParameters,
-        state: cache.state || generateState(),
-
-        authCode: cache.authCode,
-        accessToken: cache.accessToken,
-        refreshToken: cache.refreshToken
-      },
-      workflow: {
-        options: [START, AUTH_CODE, REFRESH_TOKEN],
-        showSpinner: false,
-        state: START
-      }
-    }
   },
   methods: {
     getAuthCode() {
@@ -352,6 +312,7 @@ export default {
 
       window.location.href = `${this.form.authEndpoint}?${query}`;
     },
+
     handleError(msg, workflowStateOnError = START) {
       this.$bvToast.toast(msg, {
         appendToast: false,
@@ -364,6 +325,7 @@ export default {
 
       this.workflow.state = workflowStateOnError;
     },
+
     async requestTokens(body, workflowStateOnError) {
       this.workflow.showSpinner = true;
       const response = await fetch(this.form.tokenEndpoint, {
@@ -413,6 +375,7 @@ export default {
       this.form.refreshToken = refresh_token || 'Not provided by authorization server.';
       this.workflow.state = REFRESH_TOKEN;
     },
+
     async tradeInRefreshToken() {
       this.updateAllCacheValues();
 
@@ -428,6 +391,7 @@ export default {
       this.form.refreshToken = refresh_token || this.form.refreshToken;
       this.workflow.state = REFRESH_TOKEN;
     },
+
     updateAllCacheValues() {
       cache.authEndPoint = this.form.authEndpoint;
       cache.tokenEndpoint = this.form.tokenEndpoint;
