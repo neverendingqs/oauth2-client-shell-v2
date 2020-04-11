@@ -4,53 +4,60 @@ import { expect } from 'chai';
 import App from '@/App.vue';
 
 
-import { START, /*AUTH_CODE, REFRESH_TOKEN*/ } from '../../src/lib/workflowStates';
+import { START, AUTH_CODE, REFRESH_TOKEN } from '../../src/lib/workflowStates';
 
 describe('App.vue', function() {
-  it('has correct default data when cache is empty', function() {
-    const {
-      form: {
-        authEndpoint,
-        tokenEndpoint,
+  describe('default data', function() {
+    afterEach(function() {
+      window.localStorage.clear();
+      window.sessionStorage.clear();
+    });
 
-        clientId,
-        clientSecret,
+    it('has correct default data when cache is empty', function() {
+      const {
+        form: {
+          authEndpoint,
+          tokenEndpoint,
 
-        redirectUri,
-        scope,
+          clientId,
+          clientSecret,
 
-        customParameters,
-        state: formState,
+          redirectUri,
+          scope,
 
-        authCode,
-        accessToken,
-        refreshToken
-      },
-      workflow: {
-        options,
-        showSpinner,
-        state: workflowState
-      }
-    } = App.data();
+          customParameters,
+          state: formState,
 
-    expect(authEndpoint).to.be.empty;
-    expect(tokenEndpoint).to.be.empty;
+          authCode,
+          accessToken,
+          refreshToken
+        },
+        workflow: {
+          options,
+          showSpinner,
+          state: workflowState
+        }
+      } = App.data();
 
-    expect(clientId).to.be.empty;
-    expect(clientSecret).to.be.empty;
+      expect(authEndpoint).to.be.empty;
+      expect(tokenEndpoint).to.be.empty;
 
-    expect(redirectUri).to.be.empty;
-    expect(scope).to.be.empty;
+      expect(clientId).to.be.empty;
+      expect(clientSecret).to.be.empty;
 
-    expect(customParameters).to.be.empty;
-    expect(formState).to.not.be.empty;
+      expect(redirectUri).to.be.empty;
+      expect(scope).to.be.empty;
 
-    expect(authCode).to.be.empty;
-    expect(accessToken).to.be.empty;
-    expect(refreshToken).to.be.empty;
+      expect(customParameters).to.be.empty;
+      expect(formState).to.not.be.empty;
 
-    expect(options).to.be.empty;
-    expect(showSpinner).to.be.empty;
-    expect(workflowState).to.equal(START);
+      expect(authCode).to.be.empty;
+      expect(accessToken).to.be.empty;
+      expect(refreshToken).to.be.empty;
+
+      expect(options).to.have.deep.members([START, AUTH_CODE, REFRESH_TOKEN]);
+      expect(showSpinner).to.be.false;
+      expect(workflowState).to.equal(START);
+    });
   });
 });
