@@ -79,7 +79,7 @@
         <b-col lg="6">
           <b-form-group
             id="client-secret-group"
-            label="Client Secret Endpoint"
+            label="Client Secret"
             label-for="client-secret-input"
           >
             <b-form-input
