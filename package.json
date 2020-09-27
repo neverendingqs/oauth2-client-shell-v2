@@ -14,7 +14,7 @@
     "posttest": "npm run lint"
   },
   "dependencies": {
-    "bootstrap-vue": "^2.17.0",
+    "bootstrap-vue": "^2.17.3",
     "bootswatch": "^4.5.2",
     "core-js": "^3.6.5",
     "csprng": "^0.1.2",
