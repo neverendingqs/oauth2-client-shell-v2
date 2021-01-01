@@ -14,9 +14,9 @@
     "posttest": "npm run lint"
   },
   "dependencies": {
-    "bootstrap-vue": "^2.20.1",
+    "bootstrap-vue": "^2.21.2",
     "bootswatch": "^4.5.3",
-    "core-js": "^3.8.0",
+    "core-js": "^3.8.1",
     "csprng": "^0.1.2",
     "vue": "^2.6.12",
     "vue-clipboard2": "^0.3.1"
@@ -27,12 +27,12 @@
     "@vue/cli-plugin-eslint": "^4.5.9",
     "@vue/cli-plugin-unit-mocha": "^4.5.9",
     "@vue/cli-service": "^4.5.9",
-    "@vue/test-utils": "1.1.1",
+    "@vue/test-utils": "1.1.2",
     "babel-eslint": "^10.1.0",
     "bootstrap": "^4.5.3",
     "chai": "^4.2.0",
-    "eslint": "^7.14.0",
-    "eslint-plugin-vue": "^7.1.0",
+    "eslint": "^7.16.0",
+    "eslint-plugin-vue": "^7.4.0",
     "http-server": "^0.12.3",
     "mutationobserver-shim": "^0.3.7",
     "node-sass": "^5.0.0",
