@@ -35,7 +35,7 @@
     "eslint-plugin-vue": "^7.18.0",
     "http-server": "^13.0.2",
     "mutationobserver-shim": "^0.3.7",
-    "node-sass": "^6.0.1",
+    "node-sass": "^7.0.0",
     "openssl-self-signed-certificate": "^1.1.6",
     "popper.js": "^1.16.1",
     "portal-vue": "^2.1.7",
